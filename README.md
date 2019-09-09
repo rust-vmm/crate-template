@@ -1,41 +1,70 @@
-# Crate Name
+# vmm-serde
 
 ## Design
 
-TODO: This section should have a high-level design of the crate.
+A common requirement for virtual machine snapshot, live migration and live upgrading is to
+serialize and deserialize VMM internal objects and data structures. The rust community has 
+the excellent serde/serde_derive framework for data serialization/deserialization. But the
+serde/serde_derive framework have very heavy dependency chain, and it's a common concern of the
+rust-vmm project to reduce dependency chain as small as possible. So this helper crate uses
+features to opt-in data serialization/deserialization functionality.
 
-Some questions that might help in writing this section:
-- What is the purpose of this crate?
-- What are the main components of the crate? How do they interact which each
-  other?
+Currently there are two features defined:
+- Feature `export_as_pub`
+The data serializer often needs to access private data structures or private fields in data
+structures. But rust has no support for `friend` visibility yet, though there's proposals for 
+C++ like `friend` relationship. So a proc macro `export_as_pub()` is introduced to rewrite private
+data structs/fields as `pub` when the feature `export_as_pub` is enabled. Otherwise
+`export_as_pub()` becomes a null operation.
 
-## Usage
-
-TODO: This section describes how the crate is used.
-
-Some questions that might help in writing this section:
-- What traits do users need to implement?
-- Does the crate have any default/optional features? What is each feature
-  doing?
-- Is this crate used by other rust-vmm components? If yes, how?
+- Feature `serde_derive`
+When the `serde_derive` feature is enabled, the proc_macro_derive for Serialize/Deserialize is
+reexported from the serde_derive crate, otherwise `#[derive(Serialize, Deserialize)]` becomes
+a null operation.
 
 ## Examples
 
-TODO: Usage examples.
-
+### Export all fields of a data struct as `pub`
+The `struct VmmObject`, field `state` and field `features` will be rewritten as `pub` when the
+`export_as_pub` feature is enabled.
 ```rust
-use my_crate;
+extern crate vmm_serde;
 
-...
+#[vmm_serde::export_as_pub()]
+pub(crate) struct VmmObject {
+    state: u32,
+    pub(crate) features: u64,
+}
+```
+
+### Export selected fields of a data struct as `pub`
+The `struct VmmObject` and field `features` will be rewritten as `pub` when the
+`export_as_pub` feature is enabled.
+```
+extern crate vmm_serde;
+
+[vmm_serde::export_as_pub(features)]
+pub(crate) struct VmmObject {
+    state: u32,
+    pub(crate) features: u64,
+}
+```
+
+### Opt-in/Opt-out \#[derive(Serialize, Deserialize)]
+Use feature `serde_derive` to opt-in/opt-out Serialize/Deserialize
+```
+extern crate vmm_serde;
+use vmm_serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize)]
+pub struct VmmObject {
+    state: u32,
+}
 ```
 
 ## License
+This project is licensed under
 
-**!!!NOTICE**: The BSD-3-Clause license is not included in this template.
-The license needs to be manually added because the text of the license file
-also includes the copyright. The copyright can be different for different
-crates. If the crate contains code from CrosVM, the crate must add the
-CrosVM copyright which can be found
-[here](https://chromium.googlesource.com/chromiumos/platform/crosvm/+/master/LICENSE).
-For crates developed from scratch, the copyright is different and depends on
-the contributors.
+- Apache License, Version 2.0
+- BSD 3 Clause
+

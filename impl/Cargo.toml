@@ -1,0 +1,21 @@
+[package]
+name = "vmm-serde-impl"
+version = "0.1.0"
+authors = ["Liu Jiang <gerry@linux.alibaba.com>"]
+license = "Apache-2.0 OR BSD-3-Clause"
+keywords = ["serde"]
+categories = ["encoding"]
+edition = "2018"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1.0"
+quote = "1.0"
+syn = { version = "1.0", features = ["full"] }
+
+[features]
+serde_derive = []
+export_as_pub = []
+

@@ -1,8 +1,19 @@
 [package]
-name = "crate-template"
+name = "vmm-serde"
 version = "0.1.0"
-authors = [TODO]
+authors = ["Liu Jiang <gerry@linux.alibaba.com>"]
 license = "Apache-2.0 OR BSD-3-Clause"
+keywords = ["serde"]
+categories = ["encoding"]
 edition = "2018"
 
+[workspace]
+members = ["impl"]
+
 [dependencies]
+serde = { version = "1.0", optional = true }
+vmm-serde-impl = { version = "0.1.0", path = "impl" }
+
+[features]
+serde_derive = ["serde/derive", "vmm-serde-impl/serde_derive"]
+export_as_pub = ["vmm-serde-impl/export_as_pub"]
