@@ -12,8 +12,10 @@ members = ["impl"]
 
 [dependencies]
 serde = { version = "1.0", optional = true }
+serde_bytes = { version = ">=0.11.2", optional = true }
 vmm-serde-impl = { version = "0.1.0", path = "impl" }
 
 [features]
 serde_derive = ["serde/derive", "vmm-serde-impl/serde_derive"]
+serde_derive_ffi = ["serde_bytes", "serde_derive", "vmm-serde-impl/serde_derive_ffi"]
 export_as_pub = ["vmm-serde-impl/export_as_pub"]

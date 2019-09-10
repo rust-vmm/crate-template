@@ -1,3 +1,6 @@
+// Copyright (C) 2019 Alibaba Cloud. All rights reserved.
+// SPDX-License-Identifier: Apache-2.0 or BSD-3-Clause
+
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::parse::{Parse, ParseStream, Result};
