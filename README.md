@@ -31,11 +31,12 @@ use my_crate;
 
 ## License
 
-**!!!NOTICE**: The BSD-3-Clause license is not included in this template.
-The license needs to be manually added because the text of the license file
-also includes the copyright. The copyright can be different for different
-crates. If the crate contains code from CrosVM, the crate must add the
-CrosVM copyright which can be found
+**!!!NOTICE**: The BSD-3-Clause license included in this template contains a
+generic "The rust-vmm authors" copyright.
+For crates developed from scratch, this license file can be used as is or the
+copyright can be changed, depending on the contributors. The copyright can be
+different for different crates.
+If the crate uses codes licensed with a different BSD-3-Clause license
+copyright (e.g. CrosVM), the crate must include their license file.
+The CrosVM copyright can be found
 [here](https://chromium.googlesource.com/chromiumos/platform/crosvm/+/master/LICENSE).
-For crates developed from scratch, the copyright is different and depends on
-the contributors.
