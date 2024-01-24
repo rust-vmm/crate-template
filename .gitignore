@@ -1,5 +1,4 @@
 /target
 **/*.rs.bk
-Cargo.lock
 .idea
 kcov_output
